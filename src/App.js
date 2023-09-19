@@ -5,7 +5,6 @@ import DiaryList from "./DiaryList";
 
 function App() {
   const [data, setData] = useState([]);
-
   const dataId = useRef(0);
 
   const onCreate = (author, content, emotion) => {
@@ -17,9 +16,7 @@ function App() {
       created_date,
       id: dataId.current,
     };
-
     dataId.current += 1;
-
     setData([newItem, ...data]);
   };
 
@@ -28,10 +25,18 @@ function App() {
     setData(newDiaryList);
   };
 
+  const onEdit = (targetId, newContent) => {
+    setData(
+      data.map((it) =>
+        it.id === targetId ? { ...it, content: newContent } : it
+      )
+    );
+  };
+
   return (
     <div className="App">
       <DiaryEditor onCreate={onCreate} />
-      <DiaryList diaryList={data} onRemove={onRemove} />
+      <DiaryList onEdit={onEdit} diaryList={data} onRemove={onRemove} />
     </div>
   );
 }
